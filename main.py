@@ -40,7 +40,7 @@ if __name__ == "__main__":
                 target = str(should_be_deleted_folder) + "/" + file.name
 
                 if Path(target).exists():
-                    random_num = random.randint(1, 10)
+                    random_num = random.randint(1, 1000)
                     target = f"{should_be_deleted_folder}/{file.stem} {random_num}{file.suffix}"
 
                 if file.exists():

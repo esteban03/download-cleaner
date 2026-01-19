@@ -38,7 +38,7 @@ This is the first iteration of my cleaning assistant. It uses a **Watchdog** (fi
 
 ```bash
 git clone <repository-url>
-cd download-cleaner
+cd anxiety
 ```
 
 ### 2. Install dependencies using `uv`
@@ -61,10 +61,10 @@ You can set this up as a background service using `launchd` so it runs automatic
 
 ### 1. Create the Launch Agent
 
-Create a file named `com.user.downloadcleaner.plist` in `~/Library/LaunchAgents/`:
+Create a file named `com.user.anxiety.plist` in `~/Library/LaunchAgents/`:
 
 ```bash
-touch ~/Library/LaunchAgents/com.user.downloadcleaner.plist
+touch ~/Library/LaunchAgents/com.user.anxiety.plist
 ```
 
 ### 2. Configure the Service
@@ -77,7 +77,7 @@ Paste the following configuration into the file. **Important:** Replace `YOUR_US
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.user.downloadcleaner</string>
+    <string>com.user.anxiety</string>
 
     <key>ProgramArguments</key>
     <array>
@@ -85,7 +85,7 @@ Paste the following configuration into the file. **Important:** Replace `YOUR_US
         <string>/Users/YOUR_USERNAME/.local/bin/uv</string>
         <string>run</string>
         <!-- Absolute path to main.py -->
-        <string>/PATH/TO/PROJECT/download-cleaner/main.py</string>
+        <string>/PATH/TO/PROJECT/anxiety/main.py</string>
     </array>
 
     <key>RunAtLoad</key>
@@ -95,13 +95,13 @@ Paste the following configuration into the file. **Important:** Replace `YOUR_US
     <true/>
 
     <key>StandardOutPath</key>
-    <string>/tmp/com.user.downloadcleaner.stdout.log</string>
+    <string>/tmp/com.user.anxiety.stdout.log</string>
 
     <key>StandardErrorPath</key>
-    <string>/tmp/com.user.downloadcleaner.stderr.log</string>
+    <string>/tmp/com.user.anxiety.stderr.log</string>
 
     <key>WorkingDirectory</key>
-    <string>/PATH/TO/PROJECT/download-cleaner</string>
+    <string>/PATH/TO/PROJECT/anxiety</string>
 </dict>
 </plist>
 ```
@@ -109,7 +109,7 @@ Paste the following configuration into the file. **Important:** Replace `YOUR_US
 ### 3. Load and Start the Service
 
 ```bash
-launchctl load ~/Library/LaunchAgents/com.user.downloadcleaner.plist
+launchctl load ~/Library/LaunchAgents/com.user.anxiety.plist
 ```
 
 ### 4. Monitoring
@@ -117,5 +117,5 @@ launchctl load ~/Library/LaunchAgents/com.user.downloadcleaner.plist
 Check the logs to see the magic happening:
 
 ```bash
-tail -f /tmp/com.user.downloadcleaner.stdout.log
+tail -f /tmp/com.user.anxiety.stdout.log
 ```

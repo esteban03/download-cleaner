@@ -1,5 +1,5 @@
 [project]
-name = "download-cleaner"
+name = "anxiety"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -11,4 +11,4 @@ dependencies = [
 
 
 [project.scripts]
-download-cleaner = "download_cleaner.main:app"
+anxiety = "anxiety.main:app"

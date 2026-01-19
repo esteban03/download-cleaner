@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>me.steban.www.downloadcleaner</string>
+    <string>me.steban.www.anxiety</string>
 
     <key>ProgramArguments</key>
     <array>
@@ -18,9 +18,9 @@
     <true/>
 
     <key>StandardOutPath</key>
-    <string>/tmp/me.steban.www.downloadcleaner.stdout.log</string>
+    <string>/tmp/me.steban.www.anxiety.stdout.log</string>
 
     <key>StandardErrorPath</key>
-    <string>/tmp/me.steban.www.downloadcleaner.stderr.log</string>
+    <string>/tmp/me.steban.www.anxiety.stderr.log</string>
 </dict>
 </plist>

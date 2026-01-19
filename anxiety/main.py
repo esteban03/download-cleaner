@@ -13,7 +13,7 @@ from watchdog.events import FileSystemEventHandler, DirCreatedEvent, FileCreated
 
 app = typer.Typer()
 
-command_name = "download-cleaner"
+command_name = "anxiety"
 
 @app.command()
 def watch():
@@ -80,7 +80,7 @@ def init():
             command_path=shutil.which(command_name),
         )
 
-    plist_file = Path("~/Library/LaunchAgents/me.steban.www.downloadcleaner.plist").expanduser()
+    plist_file = Path("~/Library/LaunchAgents/me.steban.www.anxiety.plist").expanduser()
     plist_file.parent.mkdir(parents=True, exist_ok=True)
     plist_file.write_text(plist_content)
 

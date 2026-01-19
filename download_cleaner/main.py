@@ -13,8 +13,10 @@ from watchdog.events import FileSystemEventHandler, DirCreatedEvent, FileCreated
 
 app = typer.Typer()
 
+command_name = "download-cleaner"
+
 @app.command()
-def run():
+def watch():
     downloads_folder = Path("~/Downloads").expanduser()
     target_folder_name = "should-be-deleted"
 
@@ -70,8 +72,13 @@ def run():
 
 @app.command()
 def init():
-    with open("plist.xml", "r") as f:
-        plist_content = f.read().format(username=getpass.getuser())
+    root_path = Path(__file__).parent
+
+    with open(root_path / "plist.xml", "r") as f:
+        plist_content = f.read().format(
+            username=getpass.getuser(),
+            command_path=shutil.which(command_name),
+        )
 
     plist_file = Path("~/Library/LaunchAgents/me.steban.www.downloadcleaner.plist").expanduser()
     plist_file.parent.mkdir(parents=True, exist_ok=True)

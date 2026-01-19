@@ -7,9 +7,8 @@
 
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/{username}/.local/bin/uv</string>
-        <string>run</string>
-        <string>/Users/{username}/Desktop/pro/learn/download-cleaner/main.py</string>
+        <string>{command_path}</string>
+        <string>watch</string>
     </array>
 
     <key>RunAtLoad</key>

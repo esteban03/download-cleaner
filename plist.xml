@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>me.steban.www.downloadcleaner</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/{username}/.local/bin/uv</string>
+        <string>run</string>
+        <string>/Users/{username}/Desktop/pro/learn/download-cleaner/main.py</string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>/tmp/me.steban.www.downloadcleaner.stdout.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/tmp/me.steban.www.downloadcleaner.stderr.log</string>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/{username}/Desktop/pro/learn/download-cleaner</string>
+</dict>
+</plist>

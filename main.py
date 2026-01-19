@@ -1,13 +1,20 @@
 import random
 import shutil
 import time
+import getpass
+import typer
+
 
 from pathlib import Path
 
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler, DirCreatedEvent, FileCreatedEvent
 
-if __name__ == "__main__":
+
+app = typer.Typer()
+
+@app.command()
+def run():
     downloads_folder = Path("~/Downloads").expanduser()
     target_folder_name = "should-be-deleted"
 
@@ -50,7 +57,6 @@ if __name__ == "__main__":
 
             print(f"{len(should_be_deleted)} files should be deleted")
 
-
     observer = Observer()
     observer.schedule(MyHandler(), downloads_folder, recursive=True)
     observer.start()
@@ -60,3 +66,19 @@ if __name__ == "__main__":
     finally:
         observer.stop()
         observer.join()
+
+
+@app.command()
+def init():
+    with open("plist.xml", "r") as f:
+        plist_content = f.read().format(username=getpass.getuser())
+
+    plist_file = Path("~/Library/LaunchAgents/me.steban.www.downloadcleaner.plist").expanduser()
+    plist_file.parent.mkdir(parents=True, exist_ok=True)
+    plist_file.write_text(plist_content)
+
+    typer.secho("Initialized successfully!", fg="green")
+
+
+if __name__ == "__main__":
+    app()

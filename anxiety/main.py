@@ -2,6 +2,7 @@ import random
 import shutil
 import time
 import getpass
+import subprocess
 import typer
 
 
@@ -69,6 +70,8 @@ def watch():
         observer.stop()
         observer.join()
 
+def _get_target_plist_file_path() -> Path:
+    return  Path("~/Library/LaunchAgents/me.steban.www.anxiety.plist").expanduser()
 
 @app.command()
 def init():
@@ -80,11 +83,33 @@ def init():
             command_path=shutil.which(command_name),
         )
 
-    plist_file = Path("~/Library/LaunchAgents/me.steban.www.anxiety.plist").expanduser()
+    plist_file =_get_target_plist_file_path()
     plist_file.parent.mkdir(parents=True, exist_ok=True)
     plist_file.write_text(plist_content)
 
+    result = subprocess.run(
+        ["launchctl", "load", str(plist_file)],
+        check=True,
+        capture_output=True,
+        text=True
+    )
+
+    result.check_returncode()
+
     typer.secho("Initialized successfully!", fg="green")
+
+
+@app.command()
+def stop():
+    result = subprocess.run(
+        ["launchctl", "unload", str(_get_target_plist_file_path())],
+        capture_output=True,
+        text=True
+    )
+
+    result.check_returncode()
+
+    typer.secho("Stopped successfully!", fg="green")
 
 
 if __name__ == "__main__":

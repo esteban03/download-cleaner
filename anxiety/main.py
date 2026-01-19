@@ -15,6 +15,7 @@ from watchdog.events import FileSystemEventHandler, DirCreatedEvent, FileCreated
 app = typer.Typer()
 
 command_name = "anxiety"
+plist_file_name = "me.steban.www.anxiety.plist"
 
 @app.command()
 def watch():
@@ -32,14 +33,14 @@ def watch():
             # single file inside the bundle.
             # I filter these out by ensuring the event comes directly from the root
             # of the Downloads folder, ignoring nested paths.
-            path_segments = event.src_path.split("/")
-            if path_segments[-2] != downloads_folder.name:
+            src_path = Path(event.src_path)
+            if src_path.parent.name != downloads_folder.name:
                 print("Folder skipped: ", event.src_path)
                 return
 
             should_be_deleted: list[Path] = []
 
-            for file in downloads_folder.glob("*"):
+            for file in downloads_folder.glob("*.[app,dmg]"):
                 if file.suffix in (".app", ".dmg"):
                     should_be_deleted.append(file)
 
@@ -71,7 +72,7 @@ def watch():
         observer.join()
 
 def _get_target_plist_file_path() -> Path:
-    return  Path("~/Library/LaunchAgents/me.steban.www.anxiety.plist").expanduser()
+    return  Path(f"~/Library/LaunchAgents/{plist_file_name}").expanduser()
 
 @app.command()
 def init():
@@ -110,6 +111,24 @@ def stop():
     result.check_returncode()
 
     typer.secho("Stopped successfully!", fg="green")
+
+
+@app.command()
+def status():
+    process_name = plist_file_name.replace(".plist", "")
+
+    result = subprocess.run(
+        ["launchctl", "list", process_name],
+        capture_output=True,
+        text=True
+    )
+
+    try:
+        result.check_returncode()
+        typer.secho("Service is running", fg="green")
+    except subprocess.CalledProcessError as e:
+        if e.returncode == 113:
+            typer.secho("Services is not running!", fg="red")
 
 
 if __name__ == "__main__":

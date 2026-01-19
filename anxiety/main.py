@@ -35,14 +35,11 @@ def watch():
             # of the Downloads folder, ignoring nested paths.
             src_path = Path(event.src_path)
             if src_path.parent.name != downloads_folder.name:
-                print("Folder skipped: ", event.src_path)
                 return
 
             should_be_deleted: list[Path] = []
-
-            for file in downloads_folder.glob("*.[app,dmg]"):
-                if file.suffix in (".app", ".dmg"):
-                    should_be_deleted.append(file)
+            should_be_deleted.extend(src_path.parent.glob("*.app"))
+            should_be_deleted.extend(src_path.parent.glob("*.dmg"))
 
             should_be_deleted_folder = Path(f"{downloads_folder}/{target_folder_name}")
             should_be_deleted_folder.mkdir(exist_ok=True)

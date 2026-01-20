@@ -19,6 +19,9 @@ plist_file_name = "me.steban.www.anxiety.plist"
 
 @app.command()
 def watch():
+    """
+    Watch your Downloads folder for new files.
+    """
     downloads_folder = Path("~/Downloads").expanduser()
     target_folder_name = "should-be-deleted"
 
@@ -73,6 +76,9 @@ def _get_target_plist_file_path() -> Path:
 
 @app.command()
 def init():
+    """
+    Run anxiety in the background.
+    """
     root_path = Path(__file__).parent
 
     with open(root_path / "plist.xml", "r") as f:
@@ -99,6 +105,9 @@ def init():
 
 @app.command()
 def stop():
+    """
+    Stop the background process.
+    """
     result = subprocess.run(
         ["launchctl", "unload", str(_get_target_plist_file_path())],
         capture_output=True,
@@ -112,6 +121,9 @@ def stop():
 
 @app.command()
 def status():
+    """
+    Check if anxiety is running.
+    """
     process_name = plist_file_name.replace(".plist", "")
 
     result = subprocess.run(

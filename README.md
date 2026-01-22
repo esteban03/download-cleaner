@@ -24,9 +24,33 @@ This is the first iteration of my cleaning assistant. It uses a **Watchdog** (fi
 ### How it works:
 
 - **Auto-Detection:** The script watches for any new item arriving in the folder.
-- **Smart Filter:** It specifically targets `.dmg` and `.app` extensions—the main culprits of unnecessary clutter.
+- **Smart Filter:** It processes ALL files in Downloads (except temporary files and the transition folder itself).
 - **Move, Don't Delete:** Files are moved to a `should-be-deleted` folder. This hacks the fear of loss, giving me a "grace period" before the final purge.
 - **Duplicate Handling:** If I download the same installer multiple times, the script detects name collisions and assigns a random number to avoid errors and keep everything traceable.
+
+## 📋 File Movement & Deletion Rules
+
+The script follows a two-stage approach based on file metadata (`st_ctime` - creation time):
+
+### Stage 1: Movement to Transition Zone
+- **Waiting Period:** Files must remain in Downloads for at least **24 hours** before being moved
+- **Target Files:** ALL files in Downloads (excluding temporary files and the transition folder)
+- **Destination:** `~/Downloads/should-be-deleted/` folder
+- **⚠️ macOS Behavior:** When files are moved, macOS treats this as creating a new file, so the creation timestamp (`st_ctime`) resets to the move time
+
+### Stage 2: Automatic Deletion
+- **Grace Period:** Files in the transition zone are kept for **1 week** before deletion
+- **Timing Logic:** Due to the macOS timestamp reset, the actual deletion occurs 1 week after the file was moved (not 1 week after original download)
+- **Example Timeline:**
+  - Day 0: File downloaded to Downloads
+  - Day 1+: File moved to `should-be-deleted` (timestamp resets)
+  - Day 8+: File automatically deleted
+
+### Temporary File Protection
+The script skips files matching these patterns to avoid interfering with active downloads:
+- `.com.google.Chrome` (Chrome temporary downloads)
+- `.tmp`, `.partial`, `.crdownload` (partial downloads)
+- `~$` (Office temporary files)
 
 ## 🛠️ Technologies
 

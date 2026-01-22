@@ -31,15 +31,6 @@ def watch():
 
             time.sleep(0.5)
 
-            # macos .app files are actually directories (bundles), so recursive monitoring
-            # is required to detect their creation. However, this triggers events for every
-            # single file inside the bundle.
-            # I filter these out by ensuring the event comes directly from the root
-            # of the Downloads folder, ignoring nested paths.
-            src_path = Path(event.src_path)
-            if src_path.parent.name != downloads_folder.name:
-                return
-
             should_be_deleted = ShouldBeDeleted(src_path=event.src_path)
             should_be_deleted.run()
 

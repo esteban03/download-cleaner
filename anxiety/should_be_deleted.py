@@ -34,11 +34,15 @@ class ShouldBeDeleted:
         files: list[Path] = [
             file
             for file in self._downloads_folder.iterdir()
-            if self._target_folder_name not in file.name
+            if not self._skipped(file)
         ]
         return files
 
     def _skipped(self, file: Path) -> bool:
+        # skip the target folder
+        if self._target_folder_name in file.name:
+            return True
+
         # check if the file it's a temporary file used for a process like chrome download
         if any(pattern in file.name for pattern in Rules.temporary_patterns):
             print("Temporary file or folder skipped -> " + file.name)
@@ -58,9 +62,6 @@ class ShouldBeDeleted:
 
         for file in should_be_deleted:
 
-            if self._skipped(file):
-                continue
-
             target_folder_path = self._should_be_deleted_folder / file.name
 
             if target_folder_path.exists():
@@ -73,6 +74,15 @@ class ShouldBeDeleted:
             print(f"Target position: {target_folder_path}")
 
     def run(self) -> None:
+        # macos .app files are actually directories (bundles), so recursive monitoring
+        # is required to detect their creation. However, this triggers events for every
+        # single file inside the bundle.
+        # I filter these out by ensuring the event comes directly from the root
+        # of the Downloads folder, ignoring nested paths.
+        if self.path.parent.name != self._downloads_folder.name:
+            return
+
+
         print("Running...")
         self._move_files()
         self._delete_files()

@@ -110,7 +110,7 @@ tail -f /tmp/me.steban.www.anxiety.stdout.log
 
 ## 🔮 Next Steps
 
+- [x] **Auto-Purge:** Implement auto-deletion rules for the `should-be-deleted` folder (e.g., delete files older than 30 days).
 - [ ] **PyPI Publication:** Package `anxiety` for easy installation via `pip install anxiety`.
 - [ ] **Homebrew Support:** Create a formula to install via `brew install anxiety`.
 - [ ] **Desktop Zen Mode:** Auto-organize the Mac Desktop to keep it always pristine, highlighting the wallpaper and reducing visual noise.
-- [ ] **Auto-Purge:** Implement auto-deletion rules for the `should-be-deleted` folder (e.g., delete files older than 30 days).
